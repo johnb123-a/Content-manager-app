@@ -1,6 +1,15 @@
+import Layout from "components/Layout";
+
+
 function about() {
     return (
-        <div> I about page </div>)
+        <>
+            <Layout>
+                <h1> I about page </h1>
+            </Layout>
+        </>
+    )
+
 }
 
 export default about;
