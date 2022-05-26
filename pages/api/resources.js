@@ -9,7 +9,14 @@ export default async function (req, res) {
     }
 
     if (req.method == "POST") {
-        return res.send("Response successful");
+
+        const { title, description, link, timeToFinish, priority } = req.body;
+
+        if (!title || !description || !link || !timeToFinish || !priority) {
+            return res.status(422).send("Data are missing!");
+        }
+
+        return res.send("Data has been received!");
     }
 
 
