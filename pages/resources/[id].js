@@ -27,12 +27,40 @@ const ResourceDetail = ({ resource }) => {
 }
 
 // I'ts called on the server and side on the client
-ResourceDetail.getInitialProps = async (context) => {
-    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.query.id}`)
+// ResourceDetail.getInitialProps = async (context) => {
+//     const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.query.id}`)
+//     const { data } = dataRes;
+//     console.log(context)
+//     return {
+//         resource: data
+//     }
+// }
+
+export async function getStaticPaths() {
+    const dataRes = await axios.get(`http://localhost:3001/api/resources`)
     const { data } = dataRes;
-    console.log(context)
+
+    const paths = data.map(resource => {
+        return {
+            params: { id: resource.id }
+        }
+    })
+
     return {
-        resource: data
+        paths,
+        //means that other routes should resolve into 404 page
+        fallback: false
+    }
+}
+
+export async function getStaticProps(context) {
+
+    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
+    const { data } = dataRes;
+    return {
+        props: {
+            resource: data
+        }
     }
 }
 
