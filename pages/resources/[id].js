@@ -36,6 +36,7 @@ const ResourceDetail = ({ resource }) => {
 //     }
 // }
 
+
 export async function getStaticPaths() {
     const dataRes = await axios.get(`http://localhost:3001/api/resources`)
     const { data } = dataRes;
@@ -60,7 +61,8 @@ export async function getStaticProps(context) {
     return {
         props: {
             resource: data
-        }
+        },
+        revalidate: 1
     }
 }
 
