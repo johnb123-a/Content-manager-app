@@ -1,7 +1,7 @@
 import Layout from "components/Layout";
+import axios from "axios";
 
-
-const ResourceDetail = () => {
+const ResourceDetail = ({ resource }) => {
     return (
         <Layout>
             <section className="hero ">
@@ -11,9 +11,9 @@ const ResourceDetail = () => {
                             <div className="columns">
                                 <div className="column is-8 is-offset-2">
                                     <div className="content is-medium">
-                                        <h2 className="subtitle is-4">Date</h2>
-                                        <h1 className="title">Tittle</h1>
-                                        <p>description</p>
+                                        <h2 className="subtitle is-4">{resource.createdAT}</h2>
+                                        <h1 className="title">{resource.title}</h1>
+                                        <p>{resource.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -24,6 +24,17 @@ const ResourceDetail = () => {
         </Layout>
     )
 
+}
+
+export async function getServerSideProps(context) {
+
+    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
+    const { data } = dataRes;
+    return {
+        props: {
+            resource: data
+        }
+    }
 }
 
 export default ResourceDetail;
