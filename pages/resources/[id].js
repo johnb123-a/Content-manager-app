@@ -26,15 +26,25 @@ const ResourceDetail = ({ resource }) => {
 
 }
 
-export async function getServerSideProps(context) {
-
-    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
+// I'ts called on the server and side on the client
+ResourceDetail.getInitialProps = async (context) => {
+    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.query.id}`)
     const { data } = dataRes;
+    console.log(context)
     return {
-        props: {
-            resource: data
-        }
+        resource: data
     }
 }
+
+// export async function getServerSideProps(context) {
+
+//     const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
+//     const { data } = dataRes;
+//     return {
+//         props: {
+//             resource: data
+//         }
+//     }
+// }
 
 export default ResourceDetail;
