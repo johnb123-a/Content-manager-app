@@ -1,5 +1,6 @@
 import Layout from "components/Layout";
 import axios from "axios";
+import Link from "next/link";
 
 const ResourceDetail = ({ resource }) => {
     return (
@@ -14,6 +15,9 @@ const ResourceDetail = ({ resource }) => {
                                         <h2 className="subtitle is-4">{resource.createdAT}</h2>
                                         <h1 className="title">{resource.title}</h1>
                                         <p>{resource.description}</p>
+                                        <Link href={`/resources/${resource.id}/edit`}>
+                                            <a className="button is-warning">Update</a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
@@ -37,44 +41,45 @@ const ResourceDetail = ({ resource }) => {
 // }
 
 
-export async function getStaticPaths() {
-    const dataRes = await axios.get(`http://localhost:3001/api/resources`)
-    const { data } = dataRes;
+// export async function getStaticPaths() {
+//     const dataRes = await axios.get(`http://localhost:3001/api/resources`)
+//     const { data } = dataRes;
 
-    const paths = data.map(resource => {
-        return {
-            params: { id: resource.id }
-        }
-    })
+//     const paths = data.map(resource => {
+//         return {
+//             params: { id: resource.id }
+//         }
+//     })
 
-    return {
-        paths,
-        //means that other routes should resolve into 404 page
-        fallback: false
-    }
-}
+//     return {
+//         paths,
+//         //means that other routes should resolve into 404 page
+//         fallback: false
+//     }
+// }
 
-export async function getStaticProps(context) {
-
-    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
-    const { data } = dataRes;
-    return {
-        props: {
-            resource: data
-        },
-        revalidate: 1
-    }
-}
-
-// export async function getServerSideProps(context) {
+// export async function getStaticProps(context) {
 
 //     const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
 //     const { data } = dataRes;
 //     return {
 //         props: {
 //             resource: data
-//         }
+//         },
+//         revalidate: 1
 //     }
 // }
+
+
+export async function getServerSideProps(context) {
+
+    const dataRes = await axios.get(`http://localhost:3001/api/resources/${context.params.id}`)
+    const { data } = dataRes;
+    return {
+        props: {
+            resource: data
+        }
+    }
+}
 
 export default ResourceDetail;
