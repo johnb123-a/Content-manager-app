@@ -6,7 +6,9 @@ import ResourceForm from 'components/ResourceForm';
 const ResourceEdit = ({ resource }) => {
 
     const updateResource = (formData) => {
-        alert(JSON.stringify(formData))
+        axios.patch("/api/resources", formData)
+            .then(_ => alert("Data has been Update"))
+            .catch(err => alert(err?.response?.data))
     }
 
     return (
